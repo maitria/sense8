@@ -41,7 +41,7 @@ void setup()
 	Serial.begin(9600); // Serial is used to print sensor readings.
 	
 	// Call rht.begin() to initialize the sensor and our data pin
-	rht.begin(RHT03_DATA_PIN);
+	rht.begin(A8);
 	
 }
 
