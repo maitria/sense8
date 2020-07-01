@@ -12,6 +12,9 @@ serial_objects = $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(serial_sources)))
 
 all: RHT03-Example-Serial.hex
 
+flash: RHT03-Example-Serial.hex
+	avrdude -p atmega32u4 -c avr109 -P $(TTY) -U flash:w:$<
+
 %.hex: %.elf
 	avr-objcopy -O ihex -R .eeprom $< $@
 
