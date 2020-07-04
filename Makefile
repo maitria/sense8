@@ -13,26 +13,28 @@ sensor_sources = \
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)
 
-sensor_objects = $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(sensor_sources)))
+sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_sources)))
 
 .PHONY: all flash clean
-all: RHT03-Example-Serial.hex
+all: out/RHT03-Example-Serial.hex
 
-flash: RHT03-Example-Serial.hex
+flash: out/RHT03-Example-Serial.hex
 	avrdude -p atmega32u4 -c avr109 -P $(TTY) -U flash:w:$<
 
 clean:
 	rm -f $(sensor_objects) *.hex
 
-%.o: %.c
+out/%.o: %.c
+	mkdir -p $(dir $@)
 	avr-gcc $(pro-micro) $(usb-config) $(make-small-code) $(include-paths) $(do-not-link) $(c-stuff-arduino-people-want) -o $@ $<
 
-%.o: %.cpp
+out/%.o: %.cpp
+	mkdir -p $(dir $@)
 	avr-c++ $(pro-micro) $(usb-config) $(make-small-code) $(include-paths) $(do-not-link) $(cpp-stuff-arduino-people-want) -o $@ $<
 
-RHT03-Example-Serial.elf: $(sensor_objects)
-	avr-c++ $(pro-micro) -o RHT03-Example-Serial.elf $(sensor_objects)
+out/RHT03-Example-Serial.elf: $(sensor_objects)
+	avr-c++ $(pro-micro) -o out/RHT03-Example-Serial.elf $(sensor_objects)
 
-%.hex: %.elf
+out/%.hex: out/%.elf
 	avr-objcopy -O ihex -R .eeprom $< $@
 
