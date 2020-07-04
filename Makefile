@@ -7,7 +7,12 @@ c-stuff-arduino-people-want = -g -std=gnu11 -ffunction-sections -fdata-sections 
 cpp-stuff-arduino-people-want = -g -std=gnu++11 -fpermissive -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -Wno-error-narrowing -MMD -flto
 
 
-sensor_sources = SparkFun_RHT03.cpp RHT03-Example-Serial.cpp $(wildcard ArduinoCore-avr/cores/arduino/*.cpp) $(wildcard ArduinoCore-avr/cores/arduino/*.c)
+sensor_sources = \
+		 SparkFun_RHT03.cpp\
+		 RHT03-Example-Serial.cpp\
+		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
+		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)
+
 sensor_objects = $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(sensor_sources)))
 
 all: RHT03-Example-Serial.hex
