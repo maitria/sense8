@@ -7,8 +7,8 @@ c-stuff-arduino-people-want = -g -std=gnu11 -ffunction-sections -fdata-sections 
 cpp-stuff-arduino-people-want = -g -std=gnu++11 -fpermissive -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -Wno-error-narrowing -MMD -flto
 
 
-serial_sources = SparkFun_RHT03.cpp RHT03-Example-Serial.cpp $(wildcard ArduinoCore-avr/cores/arduino/*.cpp) $(wildcard ArduinoCore-avr/cores/arduino/*.c)
-serial_objects = $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(serial_sources)))
+sensor_sources = SparkFun_RHT03.cpp RHT03-Example-Serial.cpp $(wildcard ArduinoCore-avr/cores/arduino/*.cpp) $(wildcard ArduinoCore-avr/cores/arduino/*.c)
+sensor_objects = $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(sensor_sources)))
 
 all: RHT03-Example-Serial.hex
 
@@ -18,8 +18,8 @@ flash: RHT03-Example-Serial.hex
 %.hex: %.elf
 	avr-objcopy -O ihex -R .eeprom $< $@
 
-RHT03-Example-Serial.elf: $(serial_objects)
-	avr-c++ $(pro-micro) -o RHT03-Example-Serial.elf $(serial_objects)
+RHT03-Example-Serial.elf: $(sensor_objects)
+	avr-c++ $(pro-micro) -o RHT03-Example-Serial.elf $(sensor_objects)
 
 %.o: %.c
 	avr-gcc $(pro-micro) $(usb-config) $(make-small-code) $(include-paths) $(do-not-link) $(c-stuff-arduino-people-want) -o $@ $<
@@ -28,4 +28,4 @@ RHT03-Example-Serial.elf: $(serial_objects)
 	avr-c++ $(pro-micro) $(usb-config) $(make-small-code) $(include-paths) $(do-not-link) $(cpp-stuff-arduino-people-want) -o $@ $<
 
 clean:
-	rm -f $(serial_objects) *.hex
+	rm -f $(sensor_objects) *.hex
