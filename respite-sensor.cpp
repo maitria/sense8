@@ -1,77 +1,40 @@
-/*    RHT03-Example-Serial.cpp
-    Jim Lindblom <jim@sparkfun.com>
-    August 31, 2015
-    
-    Ported to Arduino by Shawn Hymel
-    October 28, 2016
-    https://github.com/sparkfun/SparkFun_RHT03_Arduino_Library
-    
-    This a simple example sketch for the SparkFunRHT03 Ardiuno
-    library.
-    
-    Looking at the front (grated side) of the RHT03, the pinout is as follows:
-     1     2        3       4
-    VCC  DATA  No-Connect  GND
-    
-    Connect the data pin to Arduino pin D4. Power the RHT03 off the 3.3V bus.
-    
-    A 10k pullup resistor can be added to the data pin, though it seems to
-    work without it.
-    
-    Development environment specifics:
-    Arduino IDE v1.6.5
-    Distributed as-is; no warranty is given.  
-*/
-
-// Include the library:
 #include <SparkFun_RHT03.h>
 #include <Wire.h>
 #include <SFE_MicroOLED.h>
 
-RHT03 rht; // This creates a RTH03 object, which we'll use to interact with the sensor
+RHT03 sensor;
 
 void setup()
 {
-
     Serial.begin(9600); // Serial is used to print sensor readings.
     
-    rht.begin(A8);//A8 is the data pin
-    
+    sensor.begin(A8);//A8 is the data pin
 }
 
 int tick = 0;
 
 void loop()
 {
-        tick ++;
-    // Call rht.update() to get new humidity and temperature values from the sensor.
-    int updateRet = rht.update();
+    tick ++;
+    int updateResult = sensor.update();
     
-    // If successful, the update() function will return 1.
-    // If update fails, it will return a value <0
-    if (updateRet == 1)
+    bool succeeded = updateResult == 1;
+
+    if (succeeded)
     {
-        // The humidity(), tempC(), and tempF() functions can be called -- after 
-        // a successful update() -- to get the last humidity and temperature
-        // value 
-        float latestHumidity = rht.humidity();
-        float latestTempC = rht.tempC();
-        float latestTempF = rht.tempF();
+        float latestHumidity = sensor.humidity();
+        float latestTempC = sensor.tempC();
+        float latestTempF = sensor.tempF();
         
-        // Now print the values:
-                Serial.println("Tick: " + String(tick));
+        Serial.println("Tick: " + String(tick));
         Serial.println("Humidity: " + String(latestHumidity, 1) + " %");
         Serial.println("Temp (F): " + String(latestTempF, 1) + " deg F");
         Serial.println("Temp (C): " + String(latestTempC, 1) + " deg C");
     }
     else
     {
-        // If the update failed, try delaying for RHT_READ_INTERVAL_MS ms before
-        // trying again.
-                Serial.println("Failed attempt at tick: " + String(tick));
-        delay(RHT_READ_INTERVAL_MS);
-                
+        Serial.println("Failed attempt at tick: " + String(tick));
     }
     
-    delay(1000);
+    delay(RHT_READ_INTERVAL_MS);
 }
