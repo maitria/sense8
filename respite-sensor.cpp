@@ -25,6 +25,8 @@
 
 // Include the library:
 #include <SparkFun_RHT03.h>
+#include <Wire.h>
+#include <SFE_MicroOLED.h>
 
 /////////////////////
 // Pin Definitions //

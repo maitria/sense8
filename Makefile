@@ -9,7 +9,7 @@ cpp-stuff-arduino-people-want = -g -std=gnu++11 -fpermissive -fno-exceptions -ff
 
 sensor_sources = \
 		 SparkFun_RHT03.cpp\
-		 RHT03-Example-Serial.cpp\
+		 respite-sensor.cpp\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
 		 $(wildcard ArduinoCore-avr/libraries/Wire/src/*.cpp)\
@@ -20,9 +20,9 @@ sensor_sources = \
 sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_sources)))
 
 .PHONY: all flash clean
-all: out/RHT03-Example-Serial.hex
+all: out/respite-sensor.hex
 
-flash: out/RHT03-Example-Serial.hex
+flash: out/respite-sensor.hex
 	avrdude -p atmega32u4 -c avr109 -P $(TTY) -U flash:w:$<
 
 clean:
@@ -36,8 +36,8 @@ out/%.o: %.cpp
 	mkdir -p $(dir $@)
 	avr-c++ $(pro-micro) $(usb-config) $(make-small-code) $(include-paths) $(do-not-link) $(cpp-stuff-arduino-people-want) -o $@ $<
 
-out/RHT03-Example-Serial.elf: $(sensor_objects)
-	avr-c++ $(pro-micro) -o out/RHT03-Example-Serial.elf $(sensor_objects)
+out/respite-sensor.elf: $(sensor_objects)
+	avr-c++ $(pro-micro) -o out/respite-sensor.elf $(sensor_objects)
 
 out/%.hex: out/%.elf
 	avr-objcopy -O ihex -R .eeprom $< $@
