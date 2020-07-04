@@ -45,8 +45,11 @@ void setup()
 	
 }
 
+int tick = 0;
+
 void loop()
 {
+        tick ++;
 	// Call rht.update() to get new humidity and temperature values from the sensor.
 	int updateRet = rht.update();
 	
@@ -62,6 +65,7 @@ void loop()
 		float latestTempF = rht.tempF();
 		
 		// Now print the values:
+                Serial.println("Tick: " + String(tick));
 		Serial.println("Humidity: " + String(latestHumidity, 1) + " %");
 		Serial.println("Temp (F): " + String(latestTempF, 1) + " deg F");
 		Serial.println("Temp (C): " + String(latestTempC, 1) + " deg C");
@@ -70,7 +74,9 @@ void loop()
 	{
 		// If the update failed, try delaying for RHT_READ_INTERVAL_MS ms before
 		// trying again.
+                Serial.println("Failed attempt at tick: " + String(tick));
 		delay(RHT_READ_INTERVAL_MS);
+                
 	}
 	
 	delay(1000);
