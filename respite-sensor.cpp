@@ -26,11 +26,30 @@ void setup()
 
 int tick = 0;
 
+void communicate(float temperature, float humidity)
+{
+    Serial.println("Tick: " + String(tick));
+    Serial.println("Humidity: " + String(humidity, 1) + " %");
+    Serial.println("Temp (F): " + String(temperature, 1) + " deg F");
+    //Serial.println("Temp (C): " + String(latestTempC, 1) + " deg C");
+}
+
+void show(float temperature, float humidity, int tick)
+{
+    display.clear(PAGE);
+    display.setCursor(0,0); 
+    display.println(String(tick));
+    display.println();
+    display.println(String(temperature, 1) + " F");
+    display.println(String(humidity, 1) + " %"); 
+
+    display.display();
+}
+
 void loop()
 {
     tick ++;
     int updateResult = sensor.update();
-    
     bool succeeded = updateResult == 1;
 
     if (succeeded)
@@ -39,16 +58,8 @@ void loop()
         float latestTempC = sensor.tempC();
         float latestTempF = sensor.tempF();
         
-        Serial.println("Tick: " + String(tick));
-        Serial.println("Humidity: " + String(latestHumidity, 1) + " %");
-        Serial.println("Temp (F): " + String(latestTempF, 1) + " deg F");
-        Serial.println("Temp (C): " + String(latestTempC, 1) + " deg C");
-
-        display.clear(PAGE);
-        display.setCursor(0,0); 
-        display.println(String(latestTempF, 1) + " F");
-        display.println(String(latestHumidity, 1) + " %"); 
-        display.display();
+        communicate(latestTempF, latestHumidity); 
+        show(latestTempF, latestHumidity, tick);
     }
     else
     {
