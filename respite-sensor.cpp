@@ -9,22 +9,17 @@
 RHT03 sensor;
 MicroOLED display(FAKE_RESET_PIN, DEFAULT_ADDRESS);
 
-void setup()
+void setupDisplay()
 {
     delay(100);
     Wire.begin();
     display.begin();
     display.clear(ALL);
-    display.display();
-    delay(1000);
-    display.clear(PAGE);
-    
-    display.pixel(10,10);
-    display.pixel(11,10);
-    display.pixel(11,11);
-    display.pixel(10,11);
-    display.display();
+}
 
+void setup()
+{
+    setupDisplay();
     Serial.begin(9600);
     sensor.begin(SENSOR_DATA_PIN);
 }
@@ -48,6 +43,12 @@ void loop()
         Serial.println("Humidity: " + String(latestHumidity, 1) + " %");
         Serial.println("Temp (F): " + String(latestTempF, 1) + " deg F");
         Serial.println("Temp (C): " + String(latestTempC, 1) + " deg C");
+
+        display.clear(PAGE);
+        display.setCursor(0,0); 
+        display.println(String(latestTempF, 1) + " F");
+        display.println(String(latestHumidity, 1) + " %"); 
+        display.display();
     }
     else
     {
