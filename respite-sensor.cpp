@@ -2,13 +2,31 @@
 #include <Wire.h>
 #include <SFE_MicroOLED.h>
 
+#define SENSOR_DATA_PIN A8
+#define FAKE_RESET_PIN A1
+#define DEFAULT_ADDRESS 0
+
 RHT03 sensor;
+MicroOLED display(FAKE_RESET_PIN, DEFAULT_ADDRESS);
 
 void setup()
 {
-    Serial.begin(9600); // Serial is used to print sensor readings.
+    delay(100);
+    Wire.begin();
+    display.begin();
+    display.clear(ALL);
+    display.display();
+    delay(1000);
+    display.clear(PAGE);
     
-    sensor.begin(A8);//A8 is the data pin
+    display.pixel(10,10);
+    display.pixel(11,10);
+    display.pixel(11,11);
+    display.pixel(10,11);
+    display.display();
+
+    Serial.begin(9600);
+    sensor.begin(SENSOR_DATA_PIN);
 }
 
 int tick = 0;
