@@ -1,10 +1,10 @@
-libraries         =  SparkFun_Micro_OLED_Arduino_Library
+libraries         =  SparkFun_Micro_OLED_Arduino_Library\
+		     ArduinoCore-avr/libraries/SPI
 pro-micro         = -mmcu=atmega32u4 -DF_CPU=16000000L
 usb-config        = -DUSB_VID=0x2341 -DUSB_PID=0x8037 -DUSB_MANUFACTURER='"Unknown"' -DUSB_PRODUCT='"Arduino Micro"'
 make-small-code   = -Os
 include-paths     = -IArduinoCore-avr/cores/arduino\
   	 	    -IArduinoCore-avr/libraries/Wire/src\
-		    -IArduinoCore-avr/libraries/SPI/src\
 		    $(foreach library,$(libraries), -I$(library)/src)\
 		    -I.
 
@@ -19,7 +19,6 @@ sensor_sources = \
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
 		 $(wildcard ArduinoCore-avr/libraries/Wire/src/*.cpp)\
 		 $(wildcard ArduinoCore-avr/libraries/Wire/src/utility/*.c)\
-		 $(wildcard ArduinoCore-avr/libraries/SPI/src/*.cpp)\
 		 $(foreach library,$(libraries),$(wildcard $(library)/src/*.cpp))
 
 sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_sources)))
