@@ -5,7 +5,7 @@ make-small-code   = -Os
 include-paths     = -IArduinoCore-avr/cores/arduino\
   	 	    -IArduinoCore-avr/libraries/Wire/src\
 		    -IArduinoCore-avr/libraries/SPI/src\
-		    -I$(libraries)/src\
+		    $(foreach library,$(libraries), -I$(library)/src)\
 		    -I.
 
 do-not-link       = -c
