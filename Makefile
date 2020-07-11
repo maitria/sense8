@@ -16,17 +16,20 @@ endef
 
 include-paths     = -IArduinoCore-avr/cores/arduino\
 		    $(foreach library,$(libraries), $(call library_include_paths,$(library)))\
+		    -IRF24\
 		    -I.
 
 do-not-link       = -c
-c-stuff-arduino-people-want = -g -std=gnu11 -ffunction-sections -fdata-sections -MMD -flto -fno-fat-lto-objects
-cpp-stuff-arduino-people-want = -g -std=gnu++11 -fpermissive -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -Wno-error-narrowing -MMD -flto
+c-stuff-arduino-people-want = -g -DARDUINO -std=gnu11 -ffunction-sections -fdata-sections -MMD -flto -fno-fat-lto-objects
+cpp-stuff-arduino-people-want = -g -DARDUINO -std=gnu++11 -fpermissive -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -Wno-error-narrowing -MMD -flto
 
 sensor_sources = \
 		 SparkFun_RHT03.cpp\
 		 respite-sensor.cpp\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
+		 $(wildcard RF24/*.cpp)\
+		 $(wildcard RF24/utility/*.cpp)\
 		 $(foreach library,$(libraries),$(call library_sources,$(library)))
 
 sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_sources)))
