@@ -5,8 +5,13 @@ libraries         =  SparkFun_Micro_OLED_Arduino_Library\
 pro-micro         = -mmcu=atmega32u4 -DF_CPU=16000000L
 usb-config        = -DUSB_VID=0x2341 -DUSB_PID=0x8037 -DUSB_MANUFACTURER='"Unknown"' -DUSB_PRODUCT='"Arduino Micro"'
 make-small-code   = -Os
+
+define library_include_paths
+  -I$(1)/src
+endef
+
 include-paths     = -IArduinoCore-avr/cores/arduino\
-		    $(foreach library,$(libraries), -I$(library)/src)\
+		    $(foreach library,$(libraries), $(call library_include_paths,$(library)))\
 		    -I.
 
 do-not-link       = -c
@@ -23,8 +28,6 @@ sensor_sources = \
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
 		 $(foreach library,$(libraries),$(call library_sources,$(library)))
-
-
 
 sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_sources)))
 
