@@ -15,7 +15,7 @@ sensor_sources = \
 		 $(wildcard ArduinoCore-avr/libraries/Wire/src/*.cpp)\
 		 $(wildcard ArduinoCore-avr/libraries/Wire/src/utility/*.c)\
 		 $(wildcard ArduinoCore-avr/libraries/SPI/src/*.cpp)\
-		 $(wildcard $(libraries)/src/*.cpp)
+		 $(foreach library,$(libraries),$(wildcard $(library)/src/*.cpp))
 
 sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_sources)))
 
