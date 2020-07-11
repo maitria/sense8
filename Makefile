@@ -48,16 +48,20 @@ clean:
 #  $< is a variable that's the first input file for this rule
 
 out/%.o: %.c
-	mkdir -p $(dir $@)
-	avr-gcc $(pro-micro) $(usb-config) $(make-small-code) $(include-paths) $(do-not-link) $(c-stuff-arduino-people-want) -o $@ $<
+	@printf "Compiling $< ...\n"
+	@mkdir -p $(dir $@)
+	@avr-gcc $(pro-micro) $(usb-config) $(make-small-code) $(include-paths) $(do-not-link) $(c-stuff-arduino-people-want) -o $@ $<
 
 out/%.o: %.cpp
-	mkdir -p $(dir $@)
-	avr-c++ $(pro-micro) $(usb-config) $(make-small-code) $(include-paths) $(do-not-link) $(cpp-stuff-arduino-people-want) -o $@ $<
+	@printf "Compiling $< ...\n"
+	@mkdir -p $(dir $@)
+	@avr-c++ $(pro-micro) $(usb-config) $(make-small-code) $(include-paths) $(do-not-link) $(cpp-stuff-arduino-people-want) -o $@ $<
 
 out/respite-sensor.elf: $(sensor_objects)
-	avr-c++ $(pro-micro) -o out/respite-sensor.elf $(sensor_objects)
+	@printf "Linking $@ ...\n"
+	@avr-c++ $(pro-micro) -o out/respite-sensor.elf $(sensor_objects)
 
 out/%.hex: out/%.elf
-	avr-objcopy -O ihex -R .eeprom $< $@
+	@printf "Writing $@ ...\n"
+	@avr-objcopy -O ihex -R .eeprom $< $@
 
