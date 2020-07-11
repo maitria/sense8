@@ -14,12 +14,16 @@ define library_include_paths
   $(if $(wildcard $(1)/*.h), -I$(1), -I$(1)/src)
 endef
 
+define legacy_library_sources
+  $(wildcard $(1)/*.cpp)\
+  $(wildcard $(1)/*.c)\
+  $(wildcard $(1)/utility/*.cpp)\
+  $(wildcard $(1)/utility/*.c)
+endef
+
 define library_sources
   $(if $(wildcard $(1)/*.h),\
-     $(wildcard $(1)/*.cpp)\
-     $(wildcard $(1)/*.c)\
-     $(wildcard $(1)/utility/*.cpp)\
-     $(wildcard $(1)/utility/*.c)\
+     $(call legacy_library_sources,$(1))\
     ,\
      $(shell find $(1)/src -name '*.cpp' -o -name '*.c'))
 endef
