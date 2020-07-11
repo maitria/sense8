@@ -15,7 +15,13 @@ define library_include_paths
 endef
 
 define library_sources
-  $(shell find $(1)/src -name '*.cpp' -o -name '*.c')
+  $(if $(wildcard $(1)/*.h),\
+     $(wildcard $(1)/*.cpp)\
+     $(wildcard $(1)/*.c)\
+     $(wildcard $(1)/utility/*.cpp)\
+     $(wildcard $(1)/utility/*.c)\
+    ,\
+     $(shell find $(1)/src -name '*.cpp' -o -name '*.c'))
 endef
 
 include-paths     = -IArduinoCore-avr/cores/arduino\
@@ -27,8 +33,6 @@ sensor_sources = \
 		 respite-sensor.cpp\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
-		 $(wildcard RF24/*.cpp)\
-		 $(wildcard RF24/utility/*.cpp)\
 		 $(foreach library,$(libraries),$(call library_sources,$(library)))
 
 sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_sources)))
