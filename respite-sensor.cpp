@@ -3,6 +3,7 @@
 #include <SFE_MicroOLED.h>
 #include <SPI.h>
 #include "RF24.h"
+#include "respite-sensors.h"
 
 #define SENSOR_DATA_PIN A8
 #define FAKE_RESET_PIN A1
@@ -42,19 +43,28 @@ void setup()
 
 int tick = 0;
 
-void broadcast(float temperature, float humidity, bool radio_error)
+void console_sensor_error_log(String message)
 {
-    
-    radio.write("BASEMENT", 8);
-    display.println("did it");
-    display.display();
-    /*
+    Serial.println(message);
+}
+
+void console_sensor_data_log(float temperature, float humidity, bool radio_error)
+{
     Serial.println("Tick: " + String(tick));
     Serial.println("Humidity: " + String(humidity, 1) + " %");
     Serial.println("Temp (C): " + String(temperature, 1) + " deg C");
     if (radio_error)
         Serial.println("RADIO ERROR");
-    */
+}
+
+void broadcast(float temperature, float humidity, bool radio_error)
+{
+    Message message;
+    strcpy(message.location, "Basement");
+    message.temperature = temperature;
+    message.humidity = humidity;
+
+    radio.write(&message, sizeof(message));
 }
 
 void show(float temperature, float humidity, int tick, bool radio_error)
@@ -89,10 +99,11 @@ void loop()
         
         show(latestTempC, latestHumidity, tick, radio_error);
         broadcast(latestTempC, latestHumidity, radio_error); 
+        console_sensor_data_log(latestTempC, latestHumidity, radio_error);
     }
     else
     {
-        Serial.println("Failed attempt at tick: " + String(tick));
+        console_sensor_error_log("Sensor failed at tick: "+String(tick)); 
     }
     
     delay(RHT_READ_INTERVAL_MS);

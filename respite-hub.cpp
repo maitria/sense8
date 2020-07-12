@@ -3,6 +3,7 @@
 #include <SFE_MicroOLED.h>
 #include <SPI.h>
 #include "RF24.h"
+#include "respite-sensors.h"
 
 #define SERIAL_BAUD_RATE 9600
 
