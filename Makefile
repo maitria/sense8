@@ -43,10 +43,19 @@ sensor_sources = \
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
 		 $(foreach library,$(libraries),$(call library_sources,$(library)))
 
+hub_sources =    \
+		 SparkFun_RHT03.cpp\
+		 respite-hub.cpp\
+		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
+		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
+		 $(foreach library,$(libraries),$(call library_sources,$(library)))
+
 sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_sources)))
 
+hub_objects    = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(hub_sources)))
+
 .PHONY: all flash clean
-all: out/respite-sensor.hex
+all: sensor hub
 
 sensor: out/respite-sensor.hex
 
@@ -79,6 +88,10 @@ out/%.o: %.cpp
 out/respite-sensor.elf: $(sensor_objects)
 	@printf "Linking $@ ...\n"
 	@avr-c++ $(pro-micro) -o out/respite-sensor.elf $(sensor_objects)
+
+out/respite-hub.elf: $(hub_objects)
+	@printf "Linking $@ ...\n"
+	@avr-c++ $(pro-micro) -o out/respite-hub.elf $(hub_objects)
 
 out/%.hex: out/%.elf
 	@printf "Writing $@ ...\n"
