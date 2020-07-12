@@ -84,6 +84,7 @@ void loop()
     {
         radio.read(message, MESSAGE_SIZE);
         display.println(message);
+        display.display();
     }
 
     delay(RHT_READ_INTERVAL_MS);

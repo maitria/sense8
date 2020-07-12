@@ -28,6 +28,8 @@ void setupRadio()
 {
     radio.begin();
     radio.setPALevel(RF24_PA_LOW);
+    uint8_t pipe_name[] = "ANode";
+    radio.openWritingPipe(pipe_name);
 }
 
 void setup()
@@ -42,11 +44,17 @@ int tick = 0;
 
 void broadcast(float temperature, float humidity, bool radio_error)
 {
+    
+    radio.write("BASEMENT", 8);
+    display.println("did it");
+    display.display();
+    /*
     Serial.println("Tick: " + String(tick));
     Serial.println("Humidity: " + String(humidity, 1) + " %");
     Serial.println("Temp (C): " + String(temperature, 1) + " deg C");
     if (radio_error)
         Serial.println("RADIO ERROR");
+    */
 }
 
 void show(float temperature, float humidity, int tick, bool radio_error)
@@ -56,7 +64,7 @@ void show(float temperature, float humidity, int tick, bool radio_error)
     display.println(String(tick));
     display.println();
     display.println(String(temperature, 1) + " C");
-    display.println(String(humidity, 1) + " %"); 
+    display.println(String(humidity, 1) + " %");
     if (radio_error)
         display.println("RADIO ERR");
 
@@ -79,8 +87,8 @@ void loop()
         float latestTempC = sensor.tempC();
         float latestTempF = sensor.tempF();
         
-        broadcast(latestTempC, latestHumidity, radio_error); 
         show(latestTempC, latestHumidity, tick, radio_error);
+        broadcast(latestTempC, latestHumidity, radio_error); 
     }
     else
     {
