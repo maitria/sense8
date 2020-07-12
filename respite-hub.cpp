@@ -32,8 +32,11 @@ void setupDisplay()
 
 void setupRadio()
 {
+    uint8_t pipe_name[] = "ANode";
     radio.begin();
     radio.setPALevel(RF24_PA_LOW);
+    radio.openReadingPipe(1, pipe_name); 
+    radio.startListening();
 }
 
 void setup()
@@ -74,24 +77,14 @@ void loop()
     bool radio_error = false;
     if (!radio.isPVariant())
         radio_error = true;
-
-    tick ++;
-    int updateResult = sensor.update();
-    bool succeeded = updateResult == 1;
-
-    if (succeeded)
-    {
-        float latestHumidity = sensor.humidity();
-        float latestTempC = sensor.tempC();
-        float latestTempF = sensor.tempF();
-        
-        broadcast(latestTempC, latestHumidity, radio_error); 
-        show(latestTempC, latestHumidity, tick, radio_error);
-    }
-    else
-    {
-        Serial.println("Failed attempt at tick: " + String(tick));
-    }
     
+    #define MESSAGE_SIZE 8
+    char message[MESSAGE_SIZE+1] = {};
+    if (radio.available()) 
+    {
+        radio.read(message, MESSAGE_SIZE);
+        display.println(message);
+    }
+
     delay(RHT_READ_INTERVAL_MS);
 }
