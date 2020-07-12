@@ -4,12 +4,18 @@
 #include <SPI.h>
 #include "RF24.h"
 
+#define SERIAL_BAUD_RATE 9600
+
+// we chose pin 8 on the pro micro
 #define SENSOR_DATA_PIN A8
+
+// there is no reset pin but the code wants one <eyeroll>
 #define FAKE_RESET_PIN A1
-#define DEFAULT_ADDRESS 0
+
+#define USE_DEFAULT_I2C_ADDRESS 0
 
 RHT03 sensor;
-MicroOLED display(FAKE_RESET_PIN, DEFAULT_ADDRESS);
+MicroOLED display(FAKE_RESET_PIN, USE_DEFAULT_I2C_ADDRESS);
 RF24 radio(5,4);
 
 void setupDisplay()
@@ -20,7 +26,7 @@ void setupDisplay()
     display.clear(ALL);
     display.clear(PAGE);
     display.setCursor(0,0); 
-    display.println("READY");
+    display.println("HELLO");
     display.display();
 }
 
@@ -34,7 +40,7 @@ void setup()
 {
     setupDisplay();
     setupRadio();
-    Serial.begin(9600);
+    Serial.begin(SERIAL_BAUD_RATE);
     sensor.begin(SENSOR_DATA_PIN);
 }
 
