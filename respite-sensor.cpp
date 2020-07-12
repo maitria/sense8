@@ -20,7 +20,8 @@ void setupDisplay()
     display.clear(ALL);
     display.clear(PAGE);
     display.setCursor(0,0); 
-    display.println("Hello!");
+    display.println("READY");
+    display.display();
 }
 
 void setupRadio()
