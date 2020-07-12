@@ -1,3 +1,7 @@
+# you gotta set your own environment variables for your usb ports
+sensor-port       =  $(BOTTOM_LEFT_USB)
+hub-port	  =  $(TOP_RIGHT_USB)
+
 libraries         =  SparkFun_Micro_OLED_Arduino_Library\
 		     ArduinoCore-avr/libraries/SPI\
 		     ArduinoCore-avr/libraries/Wire\
@@ -44,16 +48,23 @@ sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_source
 .PHONY: all flash clean
 all: out/respite-sensor.hex
 
-flash: out/respite-sensor.hex
-	avrdude -p atmega32u4 -c avr109 -P $(TTY) -U flash:w:$<
+sensor: out/respite-sensor.hex
+
+flash-sensor: out/respite-sensor.hex
+	avrdude -p atmega32u4 -c avr109 -P $(sensor-port) -U flash:w:$<
+
+hub:    out/respite-hub.hex
+
+flash-hub:    out/respite-hub.hex
+	avrdude -p atmega32u4 -c avr109 -P $(hub-port) -U flash:w:$<
 
 clean:
 	rm -f $(sensor_objects) *.hex
 
 # For the noobs. In the below stuff,
 # -o is here comes the output file
-#  $@ is a variable that contains the target filename
-#  $< is a variable that's the first input file for this rule
+# $@ is a variable that contains the target filename
+# $< is a variable that's the first input file for this rule
 
 out/%.o: %.c
 	@printf "Compiling $< ...\n"
