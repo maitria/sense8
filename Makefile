@@ -41,6 +41,7 @@ sensor_sources = \
 		 respite-sensor.cpp\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
+		 micro_oled.c\
 		 $(foreach library,$(libraries),$(call library_sources,$(library)))
 
 hub_sources =    \
@@ -48,6 +49,7 @@ hub_sources =    \
 		 respite-hub.cpp\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
+		 micro_oled.c\
 		 $(foreach library,$(libraries),$(call library_sources,$(library)))
 
 sensor_objects = $(patsubst %.c,out/%.o,$(patsubst %.cpp,out/%.o,$(sensor_sources)))

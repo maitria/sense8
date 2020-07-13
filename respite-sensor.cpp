@@ -1,28 +1,45 @@
 #include <SparkFun_RHT03.h>
 #include <Wire.h>
-#include <SFE_MicroOLED.h>
 #include <SPI.h>
 #include "RF24.h"
 #include "respite-sensors.h"
+#include "micro_oled.h"
 
 #define SENSOR_DATA_PIN A8
-#define FAKE_RESET_PIN A1
-#define DEFAULT_ADDRESS 0
 
 RHT03 sensor;
-MicroOLED display(FAKE_RESET_PIN, DEFAULT_ADDRESS);
 RF24 radio(5,4);
+
+void draw(int x, int y)
+{
+    clear_buffer();
+    draw_pixel(x-1,y-1,1,NORM);
+    draw_pixel(x+1,y+1,1,NORM);
+    draw_pixel(x-1,y+1,1,NORM);
+    draw_pixel(x+1,y-1,1,NORM);
+    
+    char text[8];
+    sprintf(text,"%d, %d",x,y);
+    draw_string(0, 0, text, 1, NORM, 1);
+    send_buffer();
+
+    delay(5000);
+}
 
 void setupDisplay()
 {
     delay(100);
     Wire.begin();
-    display.begin();
-    display.clear(ALL);
-    display.clear(PAGE);
-    display.setCursor(0,0); 
-    display.println("READY");
-    display.display();
+
+    micro_oled_init();
+    clear_screen();
+    clear_buffer();
+
+    draw(24,24);
+    draw(47,47);
+    draw(127,63);
+    draw(127,0);
+    draw(63,5);
 }
 
 void setupRadio()
@@ -69,16 +86,28 @@ void broadcast(float temperature, float humidity, bool radio_error)
 
 void show(float temperature, float humidity, int tick, bool radio_error)
 {
-    display.clear(PAGE);
-    display.setCursor(0,0); 
-    display.println(String(tick));
-    display.println();
-    display.println(String(temperature, 1) + " C");
-    display.println(String(humidity, 1) + " %");
-    if (radio_error)
-        display.println("RADIO ERR");
+    char text[48];
 
-    display.display();
+    clear_buffer();
+
+    draw_pixel(0, 0, 1, NORM);
+    draw_pixel(1, 0, 1, NORM);
+    draw_pixel(0, 1, 1, NORM);
+    draw_pixel(1, 1, 1, NORM);
+    /*
+    sprintf(text, "%d", tick);
+    draw_string(0, 0, text, 1, NORM, 1);
+
+    dtostrf(temperature, 4, 1, text);
+    strcat(text, " C");
+    draw_string(0, 16, text, 1, NORM, 1);
+
+    dtostrf(humidity, 4, 1, text);
+    strcat(text, " %");
+    draw_string(0, 32, text, 1, NORM, 1);
+    */
+
+    send_buffer();
 }
 
 void loop()
