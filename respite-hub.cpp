@@ -48,44 +48,23 @@ void setup()
     sensor.begin(SENSOR_DATA_PIN);
 }
 
-int tick = 0;
-
-void broadcast(float temperature, float humidity, bool radio_error)
-{
-    Serial.println("Tick: " + String(tick));
-    Serial.println("Humidity: " + String(humidity, 1) + " %");
-    Serial.println("Temp (C): " + String(temperature, 1) + " deg C");
-    if (radio_error)
-        Serial.println("RADIO ERROR");
-}
-
-void show(float temperature, float humidity, int tick, bool radio_error)
+void show(Message& message)
 {
     display.clear(PAGE);
     display.setCursor(0,0); 
-    display.println(String(tick));
-    display.println();
-    display.println(String(temperature, 1) + " C");
-    display.println(String(humidity, 1) + " %"); 
-    if (radio_error)
-        display.println("RADIO ERR");
-
+    display.println(message.location);
+    display.println(message.temperature);
+    display.println(message.humidity);
     display.display();
 }
 
 void loop()
 {
-    bool radio_error = false;
-    if (!radio.isPVariant())
-        radio_error = true;
-    
-    #define MESSAGE_SIZE 8
-    char message[MESSAGE_SIZE+1] = {};
     if (radio.available()) 
     {
-        radio.read(message, MESSAGE_SIZE);
-        display.println(message);
-        display.display();
+        Message message;
+        radio.read(&message, sizeof(message));
+        show(message);
     }
 
     delay(RHT_READ_INTERVAL_MS);
