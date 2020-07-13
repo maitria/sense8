@@ -56,6 +56,7 @@ void show(Message& message)
     display.println(message.temperature);
     display.println(message.humidity);
     display.display();
+    delay(3000);
 }
 
 void loop()
@@ -67,5 +68,14 @@ void loop()
         show(message);
     }
 
-    delay(RHT_READ_INTERVAL_MS);
+    int updateResult = sensor.update();
+    bool sensor_succeeded = updateResult == 1;
+    if (sensor_succeeded)
+    {
+        Message local;
+        local.humidity = sensor.humidity();
+        local.temperature = sensor.tempC();
+        strcpy(local.location, "Main");
+        show(local);
+    }
 }
