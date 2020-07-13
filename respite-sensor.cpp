@@ -95,7 +95,6 @@ void loop()
     {
         float latestHumidity = sensor.humidity();
         float latestTempC = sensor.tempC();
-        float latestTempF = sensor.tempF();
         
         show(latestTempC, latestHumidity, tick, radio_error);
         broadcast(latestTempC, latestHumidity, radio_error); 
