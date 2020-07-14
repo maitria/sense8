@@ -5,14 +5,17 @@ hub-port	  =  $(TOP_RIGHT_USB)
 libraries         =  SparkFun_Micro_OLED_Arduino_Library\
 		     ArduinoCore-avr/libraries/SPI\
 		     ArduinoCore-avr/libraries/Wire\
-		     RF24
+		     RF24\
+		     Adafruit_BusIO\
+		     Adafruit-GFX-Library\
+		     Adafruit_SSD1306
 
 pro-micro         = -mmcu=atmega32u4 -DF_CPU=16000000L
 usb-config        = -DUSB_VID=0x2341 -DUSB_PID=0x8037 -DUSB_MANUFACTURER='"Unknown"' -DUSB_PRODUCT='"Arduino Micro"'
 make-small-code   = -Os
 do-not-link       = -c
-c-stuff-arduino-people-want = -g -DARDUINO -std=gnu11 -ffunction-sections -fdata-sections -MMD -flto -fno-fat-lto-objects
-cpp-stuff-arduino-people-want = -g -DARDUINO -std=gnu++11 -fpermissive -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -Wno-error-narrowing -MMD -flto
+c-stuff-arduino-people-want = -g -DARDUINO=150 -std=gnu11 -ffunction-sections -fdata-sections -MMD -flto -fno-fat-lto-objects
+cpp-stuff-arduino-people-want = -g -DARDUINO=150 -std=gnu++11 -fpermissive -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -Wno-error-narrowing -MMD -flto
 
 define library_include_paths
   $(if $(wildcard $(1)/*.h), -I$(1), -I$(1)/src)

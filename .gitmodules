@@ -7,3 +7,12 @@
 [submodule "RF24"]
 	path = RF24
 	url = git@github.com:nRF24/RF24.git
+[submodule "Adafruit_BusIO"]
+	path = Adafruit_BusIO
+	url = git@github.com:adafruit/Adafruit_BusIO.git
+[submodule "Adafruit-GFX-Library"]
+	path = Adafruit-GFX-Library
+	url = git@github.com:adafruit/Adafruit-GFX-Library.git
+[submodule "Adafruit_SSD1306"]
+	path = Adafruit_SSD1306
+	url = git@github.com:adafruit/Adafruit_SSD1306.git
