@@ -1,5 +1,5 @@
-#ifndef RESPITE_SENSORS_INCLUDED
-#define RESPITE_SENSORS_INCLUDED
+#ifndef SENSE8_INCLUDED
+#define SENSE8_INCLUDED
 
 struct Message
 {
