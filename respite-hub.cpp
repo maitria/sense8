@@ -17,6 +17,8 @@ RHT03 sensor;
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 RF24 radio(5,4);
 
+Message remote_data;
+
 void setupRadio()
 {
     uint8_t pipe_name[] = "ANode";
@@ -65,7 +67,6 @@ void loop()
 {
     if (radio.available()) 
     {
-        Message remote_data;
         radio.read(&remote_data, sizeof(remote_data));
         show_data(remote_data);
     }
