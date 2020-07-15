@@ -2,8 +2,7 @@
 sensor-port       =  $(BOTTOM_LEFT_USB)
 hub-port	  =  $(TOP_RIGHT_USB)
 
-libraries         =  SparkFun_Micro_OLED_Arduino_Library\
-		     ArduinoCore-avr/libraries/SPI\
+libraries         =  ArduinoCore-avr/libraries/SPI\
 		     ArduinoCore-avr/libraries/Wire\
 		     RF24\
 		     Adafruit_BusIO\
