@@ -44,15 +44,16 @@ void setup()
     setupDisplay();
 }
 
-void show(Message& message)
+void show_data(Message& message)
 {
-    display.clearDisplay();
-    display.setCursor(0,0); 
-    display.println(message.location);
     float tempF = (message.temperature * 9/5) + 32;
     char temperatureF[10];
     dtostrf(tempF, 4, 1, temperatureF); 
     strcat(temperatureF,"\xF8 F");
+
+    display.clearDisplay();
+    display.setCursor(0,0); 
+    display.println(message.location);
     display.println(temperatureF);
     display.println(message.humidity);
     display.display();
@@ -65,7 +66,7 @@ void loop()
     {
         Message message;
         radio.read(&message, sizeof(message));
-        show(message);
+        show_data(message);
     }
 
     int updateResult = sensor.update();
@@ -76,6 +77,6 @@ void loop()
         local.humidity = sensor.humidity();
         local.temperature = sensor.tempC();
         strcpy(local.location, "Main");
-        show(local);
+        show_data(local);
     }
 }
