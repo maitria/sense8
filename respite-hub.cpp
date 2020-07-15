@@ -18,6 +18,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 RF24 radio(5,4);
 
 Message remote_data;
+Message local;
 
 void setupRadio()
 {
@@ -75,7 +76,6 @@ void loop()
     bool sensor_succeeded = updateResult == 1;
     if (sensor_succeeded)
     {
-        Message local;
         local.humidity = sensor.humidity();
         local.temperature = sensor.tempC();
         strcpy(local.location, "Main");
