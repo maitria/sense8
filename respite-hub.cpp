@@ -50,12 +50,16 @@ void show_data(Message& message)
     char temperatureF[10];
     dtostrf(tempF, 4, 1, temperatureF); 
     strcat(temperatureF,"\xF8 F");
+    char humidityInfo[10];
+    dtostrf(message.humidity, 4, 1, humidityInfo);
+    strcat(humidityInfo, "% HUM");
 
     display.clearDisplay();
     display.setCursor(0,0); 
     display.println(message.location);
+    display.println();
     display.println(temperatureF);
-    display.println(message.humidity);
+    display.println(humidityInfo);
     display.display();
     delay(3000);
 }
