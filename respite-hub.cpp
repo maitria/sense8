@@ -1,35 +1,21 @@
 #include <SparkFun_RHT03.h>
 #include <Wire.h>
-#include <SFE_MicroOLED.h>
 #include <SPI.h>
-#include "RF24.h"
+#include <RF24.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 #include "respite-sensors.h"
 
-#define SERIAL_BAUD_RATE 9600
-
-// we chose pin 8 on the pro micro
 #define SENSOR_DATA_PIN A8
+#define OLED_RESET -1
+#define OLED_I2C_ADDRESS 0x3C
 
-// there is no reset pin but the code wants one <eyeroll>
-#define FAKE_RESET_PIN A1
-
-#define USE_DEFAULT_I2C_ADDRESS 0
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
 
 RHT03 sensor;
-MicroOLED display(FAKE_RESET_PIN, USE_DEFAULT_I2C_ADDRESS);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 RF24 radio(5,4);
-
-void setupDisplay()
-{
-    delay(100);
-    Wire.begin();
-    display.begin();
-    display.clear(ALL);
-    display.clear(PAGE);
-    display.setCursor(0,0); 
-    display.println("HELLO");
-    display.display();
-}
 
 void setupRadio()
 {
@@ -40,17 +26,28 @@ void setupRadio()
     radio.startListening();
 }
 
+void setupDisplay()
+{
+    display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADDRESS);
+    display.setTextSize(2);
+    display.setTextColor(SSD1306_WHITE);
+    display.cp437(true);
+    display.display();
+    delay(2000);
+    display.clearDisplay();
+}
+
 void setup()
 {
-    setupDisplay();
     setupRadio();
-    Serial.begin(SERIAL_BAUD_RATE);
+    Serial.begin(9600);
     sensor.begin(SENSOR_DATA_PIN);
+    setupDisplay();
 }
 
 void show(Message& message)
 {
-    display.clear(PAGE);
+    display.clearDisplay();
     display.setCursor(0,0); 
     display.println(message.location);
     display.println(message.temperature);
