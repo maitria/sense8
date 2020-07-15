@@ -29,6 +29,7 @@ void setupRadio()
 void setupDisplay()
 {
     display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADDRESS);
+    display.setRotation(2);
     display.setTextSize(2);
     display.setTextColor(SSD1306_WHITE);
     display.cp437(true);
