@@ -62,7 +62,7 @@ void console_sensor_data_log(float temperature, float humidity, bool radio_error
 
 void broadcast(float temperature, float humidity, bool radio_error)
 {
-    Message message;
+    SensorData message;
     strcpy(message.location, "Basement");
     message.temperature = temperature;
     message.humidity = humidity;

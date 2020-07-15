@@ -17,8 +17,8 @@ RHT03 sensor;
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 RF24 radio(5,4);
 
-Message remote_data;
-Message local;
+SensorData remote_data;
+SensorData local;
 
 void setupRadio()
 {
@@ -47,7 +47,7 @@ void setup()
     setupDisplay();
 }
 
-void show_data(Message& message)
+void show_data(SensorData& message)
 {
     String temperatureF((message.temperature * 9/5) + 32, 1);
     temperatureF += " \xF8" "F";

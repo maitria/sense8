@@ -1,7 +1,7 @@
 #ifndef SENSE8_INCLUDED
 #define SENSE8_INCLUDED
 
-struct Message
+struct SensorData
 {
     char location[9];
     float temperature;
