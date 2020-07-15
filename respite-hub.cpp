@@ -46,13 +46,10 @@ void setup()
 
 void show_data(Message& message)
 {
-    float tempF = (message.temperature * 9/5) + 32;
-    char temperatureF[10];
-    dtostrf(tempF, 4, 1, temperatureF); 
-    strcat(temperatureF,"\xF8 F");
-    char humidityInfo[10];
-    dtostrf(message.humidity, 4, 1, humidityInfo);
-    strcat(humidityInfo, "% HUM");
+    String temperatureF((message.temperature * 9/5) + 32, 1);
+    temperatureF += " \xF8""F";
+    String humidityInfo(message.humidity, 1);
+    humidityInfo += "% HUM";
 
     display.clearDisplay();
     display.setCursor(0,0); 
