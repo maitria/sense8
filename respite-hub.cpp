@@ -51,7 +51,11 @@ void show(Message& message)
     display.clearDisplay();
     display.setCursor(0,0); 
     display.println(message.location);
-    display.println(message.temperature);
+    float tempF = (message.temperature * 9/5) + 32;
+    char temperatureF[10];
+    dtostrf(tempF, 4, 1, temperatureF); 
+    strcat(temperatureF,"\xF8 F");
+    display.println(temperatureF);
     display.println(message.humidity);
     display.display();
     delay(3000);
