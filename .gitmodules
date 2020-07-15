@@ -1,9 +1,6 @@
 [submodule "ArduinoCore-avr"]
 	path = ArduinoCore-avr
 	url = git@github.com:arduino/ArduinoCore-avr.git
-[submodule "SparkFun_Micro_OLED_Arduino_Library"]
-	path = SparkFun_Micro_OLED_Arduino_Library
-	url = git@github.com:sparkfun/SparkFun_Micro_OLED_Arduino_Library.git
 [submodule "RF24"]
 	path = RF24
 	url = git@github.com:nRF24/RF24.git
