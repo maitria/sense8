@@ -47,7 +47,7 @@ void setup()
 void show_data(Message& message)
 {
     String temperatureF((message.temperature * 9/5) + 32, 1);
-    temperatureF += " \xF8""F";
+    temperatureF += " \xF8" "F";
     String humidityInfo(message.humidity, 1);
     humidityInfo += "% HUM";
 
@@ -65,9 +65,9 @@ void loop()
 {
     if (radio.available()) 
     {
-        Message message;
-        radio.read(&message, sizeof(message));
-        show_data(message);
+        Message remote_data;
+        radio.read(&remote_data, sizeof(remote_data));
+        show_data(remote_data);
     }
 
     int updateResult = sensor.update();
