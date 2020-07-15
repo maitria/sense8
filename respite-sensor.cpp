@@ -4,7 +4,7 @@
 #include <RF24.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include "respite-sensors.h"
+#include "sense8.h"
 
 #define SENSOR_DATA_PIN A8
 #define OLED_RESET -1
