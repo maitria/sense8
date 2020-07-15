@@ -41,6 +41,7 @@ include-paths     = -IArduinoCore-avr/cores/arduino\
 sensor_sources = \
 		 SparkFun_RHT03.cpp\
 		 respite-sensor.cpp\
+		 sense8.cpp\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
 		 $(foreach library,$(libraries),$(call library_sources,$(library)))
@@ -48,6 +49,7 @@ sensor_sources = \
 hub_sources =    \
 		 SparkFun_RHT03.cpp\
 		 respite-hub.cpp\
+		 sense8.cpp\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.cpp)\
 		 $(wildcard ArduinoCore-avr/cores/arduino/*.c)\
 		 $(foreach library,$(libraries),$(call library_sources,$(library)))

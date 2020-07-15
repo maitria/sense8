@@ -49,8 +49,6 @@ void setup()
 
 void show_data(SensorData& message)
 {
-    String temperatureF((message.temperature * 9/5) + 32, 1);
-    temperatureF += " \xF8" "F";
     String humidityInfo(message.humidity, 1);
     humidityInfo += "% HUM";
 
@@ -58,7 +56,7 @@ void show_data(SensorData& message)
     display.setCursor(0,0); 
     display.println(message.location);
     display.println();
-    display.println(temperatureF);
+    display.println(message.displayTemperature());
     display.println(humidityInfo);
     display.display();
     delay(3000);
