@@ -87,13 +87,9 @@ void loop()
 
     tick ++;
     int updateResult = sensor.update();
-    bool succeeded = updateResult == 1;
-
+    bool succeeded = (updateResult == 1);
     if (succeeded)
     {
-        float latestHumidity = sensor.humidity();
-        float latestTempC = sensor.tempC();
-
         SensorData sensorData;
         strcpy(sensorData.location, "Basement");
         sensorData.humidity = sensor.humidity();
