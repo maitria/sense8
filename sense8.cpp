@@ -10,3 +10,8 @@ String SensorData::displayTemperature()
 {
     return String(lrint(fahrenheit())) + " \xF8" "F";
 }
+
+String SensorData::displayHumidity()
+{
+    return String(lrint(humidity)) + "% HUM";
+}
