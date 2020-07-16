@@ -31,8 +31,6 @@ void setupDisplay()
     display.setTextSize(2);
     display.setTextColor(SSD1306_WHITE);
     display.cp437(true);
-    display.display();
-    delay(2000);
     display.clearDisplay();
 }
 
