@@ -74,7 +74,7 @@ void show(SensorData& sensorData, int tick, bool radio_error)
 {
     display.clearDisplay();
     display.setCursor(0,0); 
-    display.println(String(tick));
+    display.println(sensorData.location);
     display.println();
     display.println(sensorData.displayTemperature());
     display.println(sensorData.displayHumidity());
@@ -99,6 +99,7 @@ void loop()
         float latestHumidity = sensor.humidity();
         float latestTempC = sensor.tempC();
         SensorData sensorData;
+        strcpy(sensorData.location, "Basement");
         sensorData.humidity = sensor.humidity();
         sensorData.temperature = sensor.tempC();
 
