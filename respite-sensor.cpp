@@ -51,11 +51,11 @@ void console_sensor_error_log(String message)
     Serial.println(message);
 }
 
-void console_sensor_data_log(float temperature, float humidity, bool radio_error)
+void console_sensor_data_log(SensorData& sensorData, bool radio_error)
 {
     Serial.println("Tick: " + String(tick));
-    Serial.println("Humidity: " + String(humidity, 1) + " %");
-    Serial.println("Temp (C): " + String(temperature, 1) + " deg C");
+    Serial.println(sensorData.displayTemperature());
+    Serial.println(sensorData.displayHumidity());
     if (radio_error)
         Serial.println("RADIO ERROR");
 }
@@ -101,7 +101,7 @@ void loop()
 
         show(sensorData, tick, radio_error);
         broadcast(sensorData); 
-        console_sensor_data_log(latestTempC, latestHumidity, radio_error);
+        console_sensor_data_log(sensorData, radio_error);
     }
     else
     {
