@@ -1,4 +1,5 @@
 #include "sense8.h"
+#include <math.h>
 
 float SensorData::fahrenheit()
 {
@@ -7,7 +8,7 @@ float SensorData::fahrenheit()
 
 String SensorData::displayTemperature()
 {
-    String displayTemperature(fahrenheit(), 0);
+    String displayTemperature(lrint(fahrenheit()));
     displayTemperature += " \xF8" "F";
     return displayTemperature;
 }
