@@ -20,6 +20,15 @@ RF24 radio(5,4);
 SensorData remote_data;
 SensorData local;
 
+String rightSize(String s, int goal)
+{
+    if(s.length() > goal)
+        return s.substring(0, goal);
+    while (s.length() < goal)   
+        s += " ";
+    return s;
+}
+
 void setupRadio()
 {
     uint8_t pipe_name[] = "ANode";
@@ -50,8 +59,8 @@ void setup()
 
 void show_data()
 {
-    String local_data =  String(local.location) + local.displayTemperature() + local.displayHumidity();
-    String remote = String(remote_data.location) + remote_data.displayTemperature() + remote_data.displayHumidity();
+    String local_data =  rightSize(String(local.location), 11) + " " + local.displayTemperature() + " " + local.displayHumidity();
+    String remote = rightSize(String(remote_data.location), 11) + " " + remote_data.displayTemperature() + " " + remote_data.displayHumidity();
     display.clearDisplay();
     display.setCursor(0,0);
 
