@@ -1,6 +1,13 @@
 #include "sense8.h"
 #include <math.h>
 
+SensorData::SensorData()
+{
+    strcpy(location, "???");
+    temperature = 0;
+    humidity = 0;
+}
+
 float SensorData::fahrenheit()
 {
     return temperature * 9/5 + 32;

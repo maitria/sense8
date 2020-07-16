@@ -25,7 +25,7 @@ void setupRadio()
     uint8_t pipe_name[] = "ANode";
     radio.begin();
     radio.setPALevel(RF24_PA_LOW);
-    radio.openReadingPipe(1, pipe_name); 
+    radio.openReadingPipe(1, pipe_name);
     radio.startListening();
 }
 
@@ -33,7 +33,7 @@ void setupDisplay()
 {
     display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADDRESS);
     display.setRotation(2);
-    display.setTextSize(2);
+    display.setTextSize(1);
     display.setTextColor(SSD1306_WHITE);
     display.cp437(true);
     display.clearDisplay();
@@ -44,36 +44,38 @@ void setup()
     setupRadio();
     Serial.begin(9600);
     sensor.begin(SENSOR_DATA_PIN);
+    strcpy(local.location, "Main");
     setupDisplay();
 }
 
-void show_data(SensorData& message)
+void show_data()
 {
+    String local_data =  String(local.location) + local.displayTemperature() + local.displayHumidity();
+    String remote = String(remote_data.location) + remote_data.displayTemperature() + remote_data.displayHumidity();
     display.clearDisplay();
-    display.setCursor(0,0); 
-    display.println(message.location);
-    display.println();
-    display.println(message.displayTemperature());
-    display.println(message.displayHumidity());
+    display.setCursor(0,0);
+
+    display.println(local_data);
+    display.println(remote);
+
     display.display();
     delay(3000);
 }
 
 void loop()
 {
-    if (radio.available()) 
-    {
-        radio.read(&remote_data, sizeof(remote_data));
-        show_data(remote_data);
-    }
-
     int updateResult = sensor.update();
     bool sensor_succeeded = updateResult == 1;
     if (sensor_succeeded)
     {
         local.humidity = sensor.humidity();
         local.temperature = sensor.tempC();
-        strcpy(local.location, "Main");
-        show_data(local);
     }
+
+    if (radio.available())
+    {
+        radio.read(&remote_data, sizeof(remote_data));
+    }
+
+    show_data();
 }
