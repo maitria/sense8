@@ -13,5 +13,5 @@ String SensorData::displayTemperature()
 
 String SensorData::displayHumidity()
 {
-    return String(lrint(humidity)) + "% HUM";
+    return String(lrint(humidity)) + "%";
 }
