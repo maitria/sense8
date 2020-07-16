@@ -60,14 +60,9 @@ void console_sensor_data_log(float temperature, float humidity, bool radio_error
         Serial.println("RADIO ERROR");
 }
 
-void broadcast(float temperature, float humidity, bool radio_error)
+void broadcast(SensorData& sensorData)
 {
-    SensorData message;
-    strcpy(message.location, "Basement");
-    message.temperature = temperature;
-    message.humidity = humidity;
-
-    radio.write(&message, sizeof(message));
+    radio.write(&sensorData, sizeof(sensorData));
 }
 
 void show(SensorData& sensorData, int tick, bool radio_error)
@@ -98,13 +93,14 @@ void loop()
     {
         float latestHumidity = sensor.humidity();
         float latestTempC = sensor.tempC();
+
         SensorData sensorData;
         strcpy(sensorData.location, "Basement");
         sensorData.humidity = sensor.humidity();
         sensorData.temperature = sensor.tempC();
 
         show(sensorData, tick, radio_error);
-        broadcast(latestTempC, latestHumidity, radio_error); 
+        broadcast(sensorData); 
         console_sensor_data_log(latestTempC, latestHumidity, radio_error);
     }
     else
