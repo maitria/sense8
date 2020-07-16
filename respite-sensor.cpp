@@ -70,14 +70,14 @@ void broadcast(float temperature, float humidity, bool radio_error)
     radio.write(&message, sizeof(message));
 }
 
-void show(float temperature, float humidity, int tick, bool radio_error)
+void show(SensorData& sensorData, int tick, bool radio_error)
 {
     display.clearDisplay();
     display.setCursor(0,0); 
     display.println(String(tick));
     display.println();
-    display.println(String(temperature, 1) + " C");
-    display.println(String(humidity, 1) + " %");
+    display.println(sensorData.displayTemperature());
+    display.println(sensorData.displayHumidity());
     if (radio_error)
         display.println("RADIO ERR");
 
@@ -98,8 +98,11 @@ void loop()
     {
         float latestHumidity = sensor.humidity();
         float latestTempC = sensor.tempC();
-        
-        show(latestTempC, latestHumidity, tick, radio_error);
+        SensorData sensorData;
+        sensorData.humidity = sensor.humidity();
+        sensorData.temperature = sensor.tempC();
+
+        show(sensorData, tick, radio_error);
         broadcast(latestTempC, latestHumidity, radio_error); 
         console_sensor_data_log(latestTempC, latestHumidity, radio_error);
     }
