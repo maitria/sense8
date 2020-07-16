@@ -1,10 +1,13 @@
 #include "sense8.h"
 
+float SensorData::fahrenheit()
+{
+    return temperature * 9/5 + 32;
+}
 
 String SensorData::displayTemperature()
 {
-    float temperatureF = temperature * 9/5 + 32;
-    String displayTemperature(temperatureF, 1);
+    String displayTemperature(fahrenheit(), 1);
     displayTemperature += " \xF8" "F";
     return displayTemperature;
 }

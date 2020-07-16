@@ -10,6 +10,9 @@ struct SensorData
     float humidity;
 
     String displayTemperature();
+
+private:
+    float fahrenheit();
 };
 
 #endif
