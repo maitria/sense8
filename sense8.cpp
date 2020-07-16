@@ -7,7 +7,7 @@ float SensorData::fahrenheit()
 
 String SensorData::displayTemperature()
 {
-    String displayTemperature(fahrenheit(), 1);
+    String displayTemperature(fahrenheit(), 0);
     displayTemperature += " \xF8" "F";
     return displayTemperature;
 }
